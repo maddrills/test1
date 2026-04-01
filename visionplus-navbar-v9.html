@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>VisionPlus — Navigation</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lora:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ════════════════════════════════════════════════════════
+   THEME SYSTEM — exact tokens from visionplus-dispensing
+   4 colour themes, all CSS custom-property driven
+════════════════════════════════════════════════════════ */
+
+/* ── Theme 1: Ocean Professional (default) ── */
+:root,body,[data-theme="ocean"]{
+  --co:#1a4fd6;--cod:#1340b0;--col:#e8effe;--com:#c8d8fa;
+  --cdim:rgba(26,79,214,.07);--cglow:rgba(26,79,214,.22);
+  --bn-a:#0f2d6b;--bn-b:#1a4fd6;--bn-c:#1e63e8;--bn-d:#0d4ab8;
+  --bn-sh:rgba(26,79,214,.35);
+  --mt-bg-a:#e8effe;--mt-bg-b:#d4e0fa;--mt-bg-c:#bfcff5;
+  --mt-bdr:#b0c4ec;--mt-bot:#8fabdc;--mt-txt:#3a5cab;--mt-sh:rgba(26,79,214,.12);
+  --mt-on-a:#2255e0;--mt-on-b:#1a4fd6;--mt-on-c:#1340b0;
+  --mt-on-bdr:#0c2e8a;--mt-on-bot:#0a2570;--mt-on-sh:rgba(26,79,214,.45);
+  --lm-a:var(--co);--lm-b:#0d2e8f;--lm-sh:rgba(26,79,214,.3);
+  --hdr-bg:#ffffff;--hdr-bd:#dde4ed;
+  --snav-bg:#ffffff;
+  /* Nav bar colours derived from banner */
+  --nb-bg:linear-gradient(180deg,#1e56e8 0%,#1340aa 100%);
+  --nb-top:#0f2d6b;
+  --nb-bevel-bot:rgba(0,0,0,.28);
+  --nb-hover:rgba(255,255,255,.13);
+  --nb-txt:rgba(255,255,255,.88);
+  --nb-txt-act:#ffffff;
+  /* Active/selected tab — gold, same as dispensing "active" 3D button accent */
+  --nb-sel-a:#f5c518;--nb-sel-b:#e8a800;
+  --nb-sel-txt:#1a1e00;--nb-sel-sh:rgba(245,197,24,.45);
+  /* Quick-access strip */
+  --qs-a:#0b2060;--qs-b:#0e2d7a;
+  /* Dropdown section accents */
+  --sec1:#1a4fd6;--sec2:#0d9e6a;--sec3:#6228c8;--sec4:#c87800;
+}
+/* ── Theme 2: Slate Executive ── */
+[data-theme="slate"]{
+  --co:#2c5282;--cod:#1e3a5f;--col:#ebf0fa;--com:#bfcfe8;
+  --cdim:rgba(44,82,130,.07);--cglow:rgba(44,82,130,.22);
+  --bn-a:#0d1f3c;--bn-b:#1e3a5f;--bn-c:#2c5282;--bn-d:#152b47;
+  --bn-sh:rgba(30,58,95,.45);
+  --mt-bg-a:#e8edf8;--mt-bg-b:#d0daf0;--mt-bg-c:#b8c6e4;
+  --mt-bdr:#a8bcd8;--mt-bot:#7a96c0;--mt-txt:#2c4a7a;--mt-sh:rgba(44,82,130,.12);
+  --mt-on-a:#2c5282;--mt-on-b:#1e3a5f;--mt-on-c:#142847;
+  --mt-on-bdr:#0e2240;--mt-on-bot:#0a1a32;--mt-on-sh:rgba(44,82,130,.45);
+  --lm-a:#2c5282;--lm-b:#0e2240;--lm-sh:rgba(44,82,130,.3);
+  --hdr-bg:#f8faff;--hdr-bd:#c8d4e8;
+  --snav-bg:#f8faff;
+  --nb-bg:linear-gradient(180deg,#2a4478 0%,#1b3060 100%);
+  --nb-top:#0d1f3c;
+  --nb-bevel-bot:rgba(0,0,0,.28);
+  --nb-hover:rgba(255,255,255,.12);
+  --nb-txt:rgba(255,255,255,.85);
+  --nb-txt-act:#ffffff;
+  --nb-sel-a:#f0e060;--nb-sel-b:#d4c430;
+  --nb-sel-txt:#1c1800;--nb-sel-sh:rgba(240,224,96,.40);
+  --qs-a:#0d1f3c;--qs-b:#102244;
+  --sec1:#2c5282;--sec2:#0d9e6a;--sec3:#6d28d9;--sec4:#c27800;
+}
+/* ── Theme 3: Ember Warm ── */
+[data-theme="ember"]{
+  --co:#b83215;--cod:#8c2410;--col:#fdf0ec;--com:#f5c4b4;
+  --cdim:rgba(184,50,21,.07);--cglow:rgba(184,50,21,.22);
+  --bn-a:#5c1008;--bn-b:#8c2410;--bn-c:#b83215;--bn-d:#7a1c0a;
+  --bn-sh:rgba(184,50,21,.4);
+  --mt-bg-a:#fdf0ec;--mt-bg-b:#f8ddd4;--mt-bg-c:#f0c8bc;
+  --mt-bdr:#e8b0a0;--mt-bot:#d08878;--mt-txt:#8c3020;--mt-sh:rgba(184,50,21,.12);
+  --mt-on-a:#c83a1a;--mt-on-b:#b83215;--mt-on-c:#8c2410;
+  --mt-on-bdr:#6e1a08;--mt-on-bot:#581408;--mt-on-sh:rgba(184,50,21,.45);
+  --lm-a:#b83215;--lm-b:#5c1008;--lm-sh:rgba(184,50,21,.3);
+  --hdr-bg:#fffaf8;--hdr-bd:#f0d4c8;
+  --snav-bg:#fffaf8;
+  --nb-bg:linear-gradient(180deg,#9e2e10 0%,#7a2009 100%);
+  --nb-top:#5c1008;
+  --nb-bevel-bot:rgba(0,0,0,.28);
+  --nb-hover:rgba(255,255,255,.12);
+  --nb-txt:rgba(255,255,255,.88);
+  --nb-txt-act:#ffffff;
+  --nb-sel-a:#fde68a;--nb-sel-b:#f6c935;
+  --nb-sel-txt:#2a1400;--nb-sel-sh:rgba(253,230,138,.40);
+  --qs-a:#3d0a06;--qs-b:#5c1008;
+  --sec1:#b83215;--sec2:#0d9e6a;--sec3:#7c3aed;--sec4:#c87800;
+}
+/* ── Theme 4: Sage Clinical ── */
+[data-theme="sage"]{
+  --co:#1a6b5a;--cod:#125044;--col:#e8f5f2;--com:#a8d8cf;
+  --cdim:rgba(26,107,90,.07);--cglow:rgba(26,107,90,.22);
+  --bn-a:#082e26;--bn-b:#105040;--bn-c:#1a6b5a;--bn-d:#0c4236;
+  --bn-sh:rgba(26,107,90,.4);
+  --mt-bg-a:#e8f5f2;--mt-bg-b:#cce8e2;--mt-bg-c:#b0d8d0;
+  --mt-bdr:#98c8c0;--mt-bot:#6ca8a0;--mt-txt:#1a5a50;--mt-sh:rgba(26,107,90,.12);
+  --mt-on-a:#1e7a68;--mt-on-b:#1a6b5a;--mt-on-c:#125044;
+  --mt-on-bdr:#0a3c32;--mt-on-bot:#082e26;--mt-on-sh:rgba(26,107,90,.45);
+  --lm-a:#1a6b5a;--lm-b:#082e26;--lm-sh:rgba(26,107,90,.3);
+  --hdr-bg:#f8fffd;--hdr-bd:#c0dcd8;
+  --snav-bg:#f8fffd;
+  --nb-bg:linear-gradient(180deg,#155248 0%,#0e3e34 100%);
+  --nb-top:#082e26;
+  --nb-bevel-bot:rgba(0,0,0,.28);
+  --nb-hover:rgba(255,255,255,.12);
+  --nb-txt:rgba(255,255,255,.88);
+  --nb-txt-act:#ffffff;
+  --nb-sel-a:#fef08a;--nb-sel-b:#eada30;
+  --nb-sel-txt:#1a1e00;--nb-sel-sh:rgba(254,240,138,.40);
+  --qs-a:#041610;--qs-b:#082e26;
+  --sec1:#1a6b5a;--sec2:#0d7a52;--sec3:#5b21b6;--sec4:#b45309;
+}
+
+/* ── Shared neutral tokens (unchanged from dispensing) ── */
+:root,[data-theme="ocean"],[data-theme="slate"],[data-theme="ember"],[data-theme="sage"]{
+  --am:#c87800;--amb:#fff8ec;--ambd:#fddea0;--amt:#a86000;
+  --gr:#0d9e6a;--grb:#e6f7f1;--grd:rgba(13,158,106,.3);
+  --re:#c93030;--reb:#fdeaea;--rbd:rgba(201,48,48,.25);
+  --bg:#eef2f7;--bw:#fff;--sf:#f5f7fa;
+  --bd:#dde4ed;--bds:#c4d0e0;
+  --tx:#1a2738;--txm:#3c5068;--txd:#6b84a0;--txmu:#9db0c4;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shm:0 4px 16px rgba(0,30,80,.09);
+  --shl:0 16px 48px rgba(0,30,80,.18);
+  --r:10px;--rs:7px;
+}
+
+/* ════════════════════════════════════════════════════════
+   RESET & BASE
+════════════════════════════════════════════════════════ */
+*,*::before,*::after{margin:0;padding:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;font-size:14px;}
+button,a{font-family:'Outfit',sans-serif;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--sf);}
+::-webkit-scrollbar-thumb{background:var(--bds);border-radius:3px;}
+
+/* ════════════════════════════════════════════════════════
+   SMOOTH THEME TRANSITIONS — matches dispensing
+════════════════════════════════════════════════════════ */
+.vp-header,.vp-topbar,.vp-navbar-wrap,.vp-quickstrip,
+.vp-lmark,.vp-dropdown,.vp-nav-link{
+  -webkit-transition:background .35s ease,border-color .35s ease,color .25s ease,-webkit-box-shadow .35s ease;
+  transition:background .35s ease,border-color .35s ease,color .25s ease,box-shadow .35s ease;
+}
+
+/* ════════════════════════════════════════════════════════
+   HEADER SHELL — sticky, 3 stacked rows
+════════════════════════════════════════════════════════ */
+.vp-header{
+  position:-webkit-sticky;
+  position:sticky;
+  top:0;
+  z-index:400;
+  /* 3-D lift — same depth as dispensing module tabs */
+  -webkit-box-shadow:0 4px 0 rgba(0,0,0,.16), 0 6px 20px rgba(0,20,60,.20);
+          box-shadow:0 4px 0 rgba(0,0,0,.16), 0 6px 20px rgba(0,20,60,.20);
+}
+
+/* ────────────────────────────────────────────
+   ROW 1 : White/tinted top bar (dispensing style)
+──────────────────────────────────────────── */
+.vp-topbar{
+  background:var(--hdr-bg);
+  border-bottom:1px solid var(--hdr-bd);
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  -webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;
+  padding:0 22px;
+  height:56px;
+  gap:10px;
+  -webkit-transition:background .3s,border-color .3s;transition:background .3s,border-color .3s;
+}
+
+/* Logo — exact from dispensing */
+.vp-logo{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:9px;text-decoration:none;}
+.vp-lmark{
+  width:33px;height:33px;
+  background:-webkit-linear-gradient(140deg,var(--lm-a),var(--lm-b));
+  background:linear-gradient(140deg,var(--lm-a),var(--lm-b));
+  border-radius:8px;position:relative;overflow:hidden;
+  -webkit-box-shadow:0 3px 10px var(--lm-sh);box-shadow:0 3px 10px var(--lm-sh);
+  -webkit-flex-shrink:0;flex-shrink:0;
+  -webkit-transition:background .3s,box-shadow .3s;transition:background .3s,box-shadow .3s;
+}
+.vp-lmark::after{content:'';position:absolute;width:17px;height:17px;border:2.5px solid rgba(255,255,255,.92);border-radius:50%;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);}
+.vp-lmark::before{content:'';position:absolute;width:6px;height:6px;background:#fff;border-radius:50%;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1;}
+.vp-lname{font-family:'Lora',serif;font-size:16px;font-weight:600;color:var(--co);}
+.vp-lsub{font-size:9.5px;color:var(--txmu);letter-spacing:.12em;text-transform:uppercase;}
+
+/* Practice info pill */
+.vp-practice{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:5px;background:var(--sf);border:1px solid var(--bd);border-radius:7px;padding:5px 12px;font-size:12px;color:var(--txm);}
+.vp-practice strong{color:var(--tx);font-weight:600;}
+.vp-sep{color:var(--bds);margin:0 3px;}
+
+/* Right tool group */
+.vp-topright{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:8px;-webkit-flex-shrink:0;flex-shrink:0;}
+.vp-spill{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:5px;background:var(--grb);border:1px solid var(--grd);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:500;color:var(--gr);}
+.vp-sdot{width:6px;height:6px;border-radius:50%;background:var(--gr);-webkit-animation:vp-pulse 2.2s infinite;animation:vp-pulse 2.2s infinite;}
+@-webkit-keyframes vp-pulse{0%,100%{opacity:1;}50%{opacity:.28;}}
+@keyframes vp-pulse{0%,100%{opacity:1;}50%{opacity:.28;}}
+.vp-hbtn{background:none;border:1px solid var(--bd);border-radius:6px;color:var(--txm);font-size:12px;padding:4px 10px;cursor:pointer;-webkit-transition:all .17s;transition:all .17s;white-space:nowrap;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.vp-hbtn:hover{border-color:var(--co);color:var(--co);background:var(--cdim);}
+.vp-avatar{width:30px;height:30px;border-radius:50%;background:var(--col);border:2px solid var(--com);color:var(--co);font-size:11px;font-weight:700;cursor:pointer;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-flex-shrink:0;flex-shrink:0;-webkit-transition:border-color .18s;transition:border-color .18s;}
+.vp-avatar:hover{border-color:var(--co);}
+
+/* Theme picker button — exact dispensing style */
+.vp-theme-btn{
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  gap:6px;padding:5px 11px;
+  background:var(--cdim);border:1px solid var(--com);border-radius:7px;
+  cursor:pointer;font-size:12px;font-weight:600;color:var(--co);
+  -webkit-transition:all .17s;transition:all .17s;white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.vp-theme-btn:hover{background:var(--col);border-color:var(--co);-webkit-box-shadow:0 2px 8px var(--cglow);box-shadow:0 2px 8px var(--cglow);}
+.vp-theme-swatches{display:-webkit-box;display:-ms-flexbox;display:flex;gap:2px;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}
+.vp-theme-sw{width:9px;height:9px;border-radius:2px;border:1px solid rgba(0,0,0,.15);-webkit-flex-shrink:0;flex-shrink:0;}
+
+/* Theme popup — exact dispensing popup style */
+.vp-theme-popup{
+  position:fixed;top:58px;right:16px;z-index:1000;
+  background:var(--bw);border:1px solid var(--bd);border-radius:14px;
+  -webkit-box-shadow:0 12px 40px rgba(0,15,60,.18),0 3px 10px rgba(0,0,0,.1);
+          box-shadow:0 12px 40px rgba(0,15,60,.18),0 3px 10px rgba(0,0,0,.1);
+  width:230px;overflow:hidden;
+  opacity:0;pointer-events:none;
+  -webkit-transform:translateY(-8px) scale(.97);-ms-transform:translateY(-8px) scale(.97);transform:translateY(-8px) scale(.97);
+  -webkit-transition:opacity .18s ease,-webkit-transform .18s ease;transition:opacity .18s ease,transform .18s ease;
+  -webkit-transform-origin:top right;-ms-transform-origin:top right;transform-origin:top right;
+}
+.vp-theme-popup.open{opacity:1;pointer-events:auto;-webkit-transform:translateY(0) scale(1);-ms-transform:translateY(0) scale(1);transform:translateY(0) scale(1);}
+.vp-tp-hd{padding:11px 14px 9px;background:-webkit-linear-gradient(left,var(--bn-a),var(--bn-b));background:linear-gradient(90deg,var(--bn-a),var(--bn-b));display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;}
+.vp-tp-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.9);}
+.vp-tp-close{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:50%;width:22px;height:22px;color:#fff;font-size:12px;cursor:pointer;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-transition:background .15s;transition:background .15s;}
+.vp-tp-close:hover{background:rgba(255,255,255,.3);}
+.vp-tp-list{padding:8px;}
+.vp-theme-opt{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;border:1.5px solid transparent;cursor:pointer;-webkit-transition:all .15s;transition:all .15s;margin-bottom:4px;-webkit-tap-highlight-color:transparent;}
+.vp-theme-opt:last-child{margin-bottom:0;}
+.vp-theme-opt:hover{background:var(--sf);border-color:var(--bds);}
+.vp-theme-opt.active{background:var(--col);border-color:var(--co);-webkit-box-shadow:0 0 0 2px var(--cglow);box-shadow:0 0 0 2px var(--cglow);}
+.vp-ts-swatches{display:-webkit-box;display:-ms-flexbox;display:flex;gap:3px;-webkit-flex-shrink:0;flex-shrink:0;}
+.vp-ts-sw{width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.12);}
+.vp-theme-opt-name{font-size:12px;font-weight:700;color:var(--tx);}
+.vp-theme-opt-desc{font-size:10px;color:var(--txmu);display:block;margin-top:1px;}
+.vp-tp-tick{margin-left:auto;color:var(--co);font-size:14px;font-weight:700;display:none;}
+.vp-theme-opt.active .vp-tp-tick{display:block;}
+
+/* Mobile hamburger in top-bar */
+.vp-mob-toggle{
+  display:none;background:none;border:1px solid var(--bd);border-radius:6px;
+  color:var(--txm);font-size:16px;padding:4px 9px;cursor:pointer;line-height:1;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+
+/* ────────────────────────────────────────────
+   ROW 2 : Coloured 3-D navigation bar
+   Uses the same 3D technique as dispensing module tabs (.mt)
+──────────────────────────────────────────── */
+.vp-navbar-wrap{
+  /* Nav bar body: gradient from dispensing banner colours */
+  background:var(--nb-bg);
+  /* 3-D bottom edge — same depth style as .mt border-bottom */
+  border-bottom:4px solid var(--nb-bevel-bot);
+  /* Inner top highlight like .mt inset */
+  -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 3px 0 rgba(0,0,0,.20);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.18), 0 3px 0 rgba(0,0,0,.20);
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;
+  position:relative;
+}
+.vp-navbar{
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;
+  height:44px;padding:0 8px;gap:3px;
+  overflow:visible;-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;
+  position:relative;
+}
+
+/* Nav item wrapper */
+.vp-nav-item{
+  position:relative;
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:stretch;-ms-flex-align:stretch;align-items:stretch;
+}
+
+/* ── 3-D nav button — mirrors dispensing .mt resting style ── */
+.vp-nav-link{
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  gap:6px;padding:0 15px;
+  font-size:13px;font-weight:500;
+  color:var(--nb-txt);
+  text-decoration:none;cursor:pointer;
+  border:none;background:none;
+  font-family:'Outfit',sans-serif;
+  position:relative;white-space:nowrap;
+  overflow:hidden; /* contains ::before spotlight glow */
+  -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  border-radius:5px 5px 0 0;
+  /* Subtle bevel — inset highlight like .mt */
+  -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.12);
+  -webkit-transition:background .15s,color .15s,-webkit-box-shadow .15s,-webkit-transform .12s;
+  transition:background .15s,color .15s,box-shadow .15s,transform .12s;
+}
+/* ── Radial spotlight sweep — lights up on hover / open ── */
+.vp-nav-link::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(ellipse 100% 150% at 50% -5%, rgba(255,255,255,.24) 0%, transparent 65%);
+  opacity:0;pointer-events:none;
+  -webkit-transition:opacity .20s ease;transition:opacity .20s ease;
+}
+.vp-nav-link:hover::before,
+.vp-nav-item.open > .vp-nav-link::before{opacity:1;}
+/* Keep active tab clean — gold gradient does the heavy lifting */
+.vp-nav-item.active > .vp-nav-link::before{opacity:0;}
+/* Hover — lift like .mt:hover translateY(-1px) */
+.vp-nav-link:hover{
+  background:var(--nb-hover);
+  color:var(--nb-txt-act);
+  -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.20), 0 2px 8px rgba(0,0,0,.22);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.20), 0 2px 8px rgba(0,0,0,.22);
+  -webkit-transform:translateY(-1px);-ms-transform:translateY(-1px);transform:translateY(-1px);
+}
+.vp-nav-item.open > .vp-nav-link{
+  background:rgba(255,255,255,.24);
+  color:var(--nb-txt-act);
+  -webkit-box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.38),
+    0 4px 16px rgba(0,0,0,.30),
+    0 0 0 1px rgba(255,255,255,.14);
+          box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.38),
+    0 4px 16px rgba(0,0,0,.30),
+    0 0 0 1px rgba(255,255,255,.14);
+  -webkit-transform:translateY(-1px);-ms-transform:translateY(-1px);transform:translateY(-1px);
+}
+
+/* ★ ACTIVE tab — clean frosted white lift ★ */
+.vp-nav-item.active > .vp-nav-link{
+  background:rgba(255,255,255,.30);
+  color:#fff !important;
+  font-weight:700;
+  border-radius:5px 5px 0 0;
+  -webkit-box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    0 3px 0 rgba(0,0,0,.14),
+    0 5px 14px rgba(0,0,0,.18);
+          box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.55),
+    0 3px 0 rgba(0,0,0,.14),
+    0 5px 14px rgba(0,0,0,.18);
+  -webkit-transform:translateY(-2px);-ms-transform:translateY(-2px);transform:translateY(-2px);
+  -webkit-transition:none;transition:none;
+}
+.vp-nav-item.active > .vp-nav-link .vp-chevron{color:rgba(255,255,255,.55);}
+/* ── Gold spring-underline — scales in from centre when open ── */
+.vp-nav-link::after{
+  content:'';position:absolute;bottom:0;left:10%;right:10%;
+  height:2.5px;
+  background:-webkit-linear-gradient(left, transparent 0%, var(--nb-sel-a) 30%, var(--nb-sel-a) 70%, transparent 100%);
+  background:linear-gradient(90deg, transparent 0%, var(--nb-sel-a) 30%, var(--nb-sel-a) 70%, transparent 100%);
+  border-radius:2px 2px 0 0;
+  opacity:0;
+  -webkit-transform:scaleX(0);-ms-transform:scaleX(0);transform:scaleX(0);
+  -webkit-transition:opacity .18s, -webkit-transform .26s cubic-bezier(.34,1.56,.64,1);
+  transition:opacity .18s, transform .26s cubic-bezier(.34,1.56,.64,1);
+}
+.vp-nav-item.open > .vp-nav-link::after{
+  opacity:1;
+  -webkit-transform:scaleX(1);-ms-transform:scaleX(1);transform:scaleX(1);
+}
+.vp-nav-item.active > .vp-nav-link::after{
+  background:-webkit-linear-gradient(left, transparent 0%, rgba(0,0,0,.22) 30%, rgba(0,0,0,.22) 70%, transparent 100%);
+  background:linear-gradient(90deg, transparent 0%, rgba(0,0,0,.22) 30%, rgba(0,0,0,.22) 70%, transparent 100%);
+  opacity:1;
+  -webkit-transform:scaleX(1);-ms-transform:scaleX(1);transform:scaleX(1);
+}
+
+.vp-nav-icon{width:18px;height:18px;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;font-size:14px;line-height:1;}
+.vp-chevron{font-size:9px;color:rgba(255,255,255,.44);margin-left:1px;display:inline-block;-webkit-transition:-webkit-transform .22s,color .18s;transition:transform .22s,color .18s;}
+.vp-nav-item.open > .vp-nav-link .vp-chevron{-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg);color:#fff;}
+
+/* Right utilities in nav bar */
+.vp-navbar-spacer{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;}
+.vp-nav-util{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:4px;padding:0 8px;border-left:1px solid rgba(255,255,255,.14);}
+.vp-util-btn{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:5px;padding:4px 11px;border-radius:6px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);font-size:12px;font-weight:500;color:rgba(255,255,255,.85);cursor:pointer;text-decoration:none;-webkit-transition:all .17s;transition:all .17s;white-space:nowrap;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.vp-util-btn:hover{background:rgba(255,255,255,.20);border-color:rgba(255,255,255,.42);color:#fff;}
+.vp-util-btn.danger{background:rgba(220,38,38,.18);border-color:rgba(220,38,38,.38);color:rgba(255,180,180,.9);}
+.vp-util-btn.danger:hover{background:rgba(220,38,38,.30);border-color:rgba(255,100,100,.6);color:#fff;}
+
+/* ────────────────────────────────────────────
+   ROW 3 : Quick-access strip — below the nav bar
+   Darker gradient from dispensing banner --bn-a colours
+──────────────────────────────────────────── */
+.vp-quickstrip{
+  background:-webkit-linear-gradient(left, var(--qs-a) 0%, var(--qs-b) 100%);
+  background:linear-gradient(90deg, var(--qs-a) 0%, var(--qs-b) 100%);
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  height:36px;padding:0 22px;gap:6px;
+  border-top:1px solid rgba(255,255,255,.08);
+  -webkit-transition:background .35s;transition:background .35s;
+}
+.vp-qs-label{font-size:9px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.38);padding-right:12px;border-right:1px solid rgba(255,255,255,.13);margin-right:4px;white-space:nowrap;}
+/* Quick buttons — same 3-D style as dispensing .mt resting */
+.vp-qs-btn{
+  display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  gap:6px;padding:0 13px;height:24px;border-radius:5px;
+  background:-webkit-linear-gradient(top, rgba(255,255,255,.16) 0%, rgba(255,255,255,.08) 100%);
+  background:linear-gradient(180deg, rgba(255,255,255,.16) 0%, rgba(255,255,255,.08) 100%);
+  border-top:1px solid rgba(255,255,255,.22);
+  border-left:1px solid rgba(255,255,255,.14);
+  border-right:1px solid rgba(255,255,255,.10);
+  border-bottom:2px solid rgba(0,0,0,.25);
+  -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 2px 0 rgba(0,0,0,.20);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.16), 0 2px 0 rgba(0,0,0,.20);
+  color:rgba(255,255,255,.88);
+  font-size:11.5px;font-weight:600;
+  cursor:pointer;text-decoration:none;white-space:nowrap;
+  -webkit-transition:all .15s;transition:all .15s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.vp-qs-btn:hover{
+  background:-webkit-linear-gradient(top, rgba(255,255,255,.22) 0%, rgba(255,255,255,.14) 100%);
+  background:linear-gradient(180deg, rgba(255,255,255,.22) 0%, rgba(255,255,255,.14) 100%);
+  -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 3px 8px rgba(0,0,0,.28);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.22), 0 3px 8px rgba(0,0,0,.28);
+  -webkit-transform:translateY(-1px);-ms-transform:translateY(-1px);transform:translateY(-1px);
+}
+.vp-qs-btn:active{-webkit-transform:translateY(0);-ms-transform:translateY(0);transform:translateY(0);border-bottom-width:1px;-webkit-box-shadow:inset 0 1px 3px rgba(0,0,0,.3);box-shadow:inset 0 1px 3px rgba(0,0,0,.3);}
+/* New Task — clean white-glass accent, no gold */
+.vp-qs-btn.accent{
+  background:-webkit-linear-gradient(top, rgba(255,255,255,.30) 0%, rgba(255,255,255,.16) 100%);
+  background:linear-gradient(180deg, rgba(255,255,255,.30) 0%, rgba(255,255,255,.16) 100%);
+  border-top:1px solid rgba(255,255,255,.55);
+  border-bottom:2px solid rgba(0,0,0,.22);
+  color:#fff;
+  font-weight:700;
+  -webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.50), 0 2px 0 rgba(0,0,0,.18), 0 3px 10px rgba(0,0,0,.20);
+          box-shadow:inset 0 1px 0 rgba(255,255,255,.50), 0 2px 0 rgba(0,0,0,.18), 0 3px 10px rgba(0,0,0,.20);
+}
+.vp-qs-btn.accent:hover{
+  background:-webkit-linear-gradient(top, rgba(255,255,255,.40) 0%, rgba(255,255,255,.24) 100%);
+  background:linear-gradient(180deg, rgba(255,255,255,.40) 0%, rgba(255,255,255,.24) 100%);
+}
+.vp-qs-ico{font-size:12px;line-height:1;}
+.vp-qs-spacer{-webkit-box-flex:1;-webkit-flex:1;-ms-flex:1;flex:1;}
+.vp-qs-time{font-size:11px;font-weight:500;color:rgba(255,255,255,.46);letter-spacing:.05em;white-space:nowrap;}
+
+/* ════════════════════════════════════════════════════════
+   DROPDOWN PANELS — rich coloured section headers
+   Matching the dispensing card section header style
+════════════════════════════════════════════════════════ */
+.vp-dropdown{
+  position:absolute;top:calc(100% + 4px);left:0;
+  min-width:256px;
+  /* Light theme-matched tint — clearly visible, soft */
+  background:var(--col);
+  background:color-mix(in srgb, var(--col) 80%, var(--bw) 20%);
+  border:1px solid var(--bd);
+  border-top:3px solid var(--co);
+  border-radius:0 var(--r) var(--r) var(--r);
+  -webkit-box-shadow:0 2px 0 rgba(0,0,0,.08), 0 8px 0 rgba(0,0,0,.04), 0 16px 48px rgba(0,15,60,.20);
+          box-shadow:0 2px 0 rgba(0,0,0,.08), 0 8px 0 rgba(0,0,0,.04), 0 16px 48px rgba(0,15,60,.20);
+  padding:8px;opacity:0;pointer-events:none;
+  -webkit-transform:translateY(-10px) scale(.98);-ms-transform:translateY(-10px) scale(.98);transform:translateY(-10px) scale(.98);
+  -webkit-transform-origin:top left;-ms-transform-origin:top left;transform-origin:top left;
+  -webkit-transition:opacity .2s,-webkit-transform .2s;transition:opacity .2s,transform .2s;
+  z-index:600;
+}
+.vp-dropdown.wide{
+  min-width:520px;
+  display:-ms-grid;display:grid;
+  -ms-grid-columns:1fr 8px 1fr;grid-template-columns:1fr 1fr;gap:0 8px;
+  /* Explicit theme tint — wider surface benefits from clearly visible wash */
+  background:var(--col);
+  background:color-mix(in srgb, var(--col) 80%, var(--bw) 20%);
+}
+.vp-nav-item.open > .vp-dropdown{opacity:1;pointer-events:all;-webkit-transform:translateY(0) scale(1);-ms-transform:translateY(0) scale(1);transform:translateY(0) scale(1);}
+
+/* Section header — dispensing card header style with coloured left border */
+.vp-dd-section{
+  grid-column:1/-1;
+  padding:7px 10px 5px;
+  font-size:9.5px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;
+  color:var(--sec1);
+  border-left:3px solid var(--sec1);
+  background:-webkit-linear-gradient(left,rgba(26,79,214,.07) 0%,transparent 70%);
+  background:linear-gradient(90deg,rgba(26,79,214,.07) 0%,transparent 70%);
+  border-radius:0 4px 4px 0;
+  margin-bottom:3px;
+}
+.vp-dd-section:not(:first-child){margin-top:10px;}
+.vp-dd-section.solo{grid-column:unset;}
+.vp-dd-section.c2{color:var(--sec2);border-left-color:var(--sec2);background:-webkit-linear-gradient(left,rgba(13,158,106,.07) 0%,transparent 70%);background:linear-gradient(90deg,rgba(13,158,106,.07) 0%,transparent 70%);}
+.vp-dd-section.c3{color:var(--sec3);border-left-color:var(--sec3);background:-webkit-linear-gradient(left,rgba(98,40,200,.07) 0%,transparent 70%);background:linear-gradient(90deg,rgba(98,40,200,.07) 0%,transparent 70%);}
+.vp-dd-section.c4{color:var(--sec4);border-left-color:var(--sec4);background:-webkit-linear-gradient(left,rgba(200,120,0,.07) 0%,transparent 70%);background:linear-gradient(90deg,rgba(200,120,0,.07) 0%,transparent 70%);}
+
+/* Dropdown item */
+.vp-dd-item{
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  gap:10px;padding:8px 10px;border-radius:var(--rs);
+  font-size:13px;font-weight:400;color:var(--txm);
+  text-decoration:none;cursor:pointer;
+  -webkit-transition:background .13s,color .13s,-webkit-transform .13s;
+  transition:background .13s,color .13s,transform .13s;
+  white-space:nowrap;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.vp-dd-item:hover{background:var(--cdim);color:var(--co);-webkit-transform:translateX(2px);-ms-transform:translateX(2px);transform:translateX(2px);}
+
+/* Icon tiles — tinted to match section colour */
+.vp-dd-ico{
+  width:30px;height:30px;-webkit-flex-shrink:0;flex-shrink:0;
+  display:-webkit-box;display:-ms-flexbox;display:flex;
+  -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+  -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;
+  border-radius:8px;font-size:13px;
+  background:var(--col);border:1px solid var(--com);
+  -webkit-box-shadow:0 1px 3px rgba(0,0,0,.07);box-shadow:0 1px 3px rgba(0,0,0,.07);
+  -webkit-transition:all .14s;transition:all .14s;
+}
+.vp-dd-item:hover .vp-dd-ico{background:var(--co);border-color:var(--co);-webkit-transform:scale(1.08);-ms-transform:scale(1.08);transform:scale(1.08);}
+.vp-dd-item.ico-c2 .vp-dd-ico{background:rgba(13,158,106,.10);border-color:rgba(13,158,106,.26);}
+.vp-dd-item.ico-c2:hover{color:var(--sec2);}
+.vp-dd-item.ico-c2:hover .vp-dd-ico{background:var(--sec2);border-color:var(--sec2);}
+.vp-dd-item.ico-c3 .vp-dd-ico{background:rgba(98,40,200,.08);border-color:rgba(98,40,200,.22);}
+.vp-dd-item.ico-c3:hover{color:var(--sec3);}
+.vp-dd-item.ico-c3:hover .vp-dd-ico{background:var(--sec3);border-color:var(--sec3);}
+.vp-dd-item.ico-c4 .vp-dd-ico{background:rgba(200,120,0,.09);border-color:rgba(200,120,0,.22);}
+.vp-dd-item.ico-c4:hover{color:var(--sec4);}
+.vp-dd-item.ico-c4:hover .vp-dd-ico{background:var(--sec4);border-color:var(--sec4);}
+
+.vp-dd-label{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;gap:1px;}
+.vp-dd-name{font-weight:500;font-size:12.5px;line-height:1.25;color:var(--tx);}
+.vp-dd-desc{font-size:10.5px;color:var(--txmu);line-height:1.25;}
+.vp-dd-item:hover .vp-dd-name{color:inherit;}
+.vp-dd-divider{height:1px;background:var(--bd);margin:4px 0;grid-column:1/-1;}
+
+/* ════════════════════════════════════════════════════════
+   DEMO PAGE — mirrors dispensing page look
+════════════════════════════════════════════════════════ */
+.demo-body{max-width:940px;margin:36px auto;padding:0 24px 40px;}
+.demo-card{background:var(--bw);border:1px solid var(--bd);border-radius:var(--r);padding:28px 32px;-webkit-box-shadow:var(--sh);box-shadow:var(--sh);margin-bottom:20px;}
+.demo-card h2{font-family:'Lora',serif;color:var(--co);margin-bottom:8px;font-size:20px;}
+.demo-card p{color:var(--txm);line-height:1.75;font-size:13.5px;}
+.demo-card pre{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:14px 16px;margin-top:14px;font-size:12px;color:var(--tx);overflow-x:auto;font-family:'JetBrains Mono',Consolas,monospace;line-height:1.6;}
+.demo-tag{display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;gap:4px;background:var(--col);border:1px solid var(--com);border-radius:20px;padding:3px 11px;font-size:10.5px;font-weight:600;color:var(--co);margin-right:5px;margin-top:8px;}
+
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE — mirrors dispensing breakpoints exactly
+════════════════════════════════════════════════════════ */
+
+/* Tablet ≤900px */
+@media(max-width:900px){
+  .vp-practice{display:none;}
+  .vp-topbar{padding:0 16px;}
+  .vp-quickstrip{padding:0 16px;}
+}
+
+/* ═══════════════════════════════════════════════
+   MOBILE ≤640px — full responsive drawer
+═══════════════════════════════════════════════ */
+@media(max-width:640px){
+
+  /* ── Top bar ── */
+  .vp-topbar{padding:0 14px;height:56px;}
+  .vp-spill{display:none;}
+  .vp-hbtn{display:none;}
+  .vp-practice{display:none;}
+  .vp-theme-btn .vp-theme-swatches{display:none;}
+  .vp-theme-btn{font-size:12px;padding:5px 10px;}
+  .vp-mob-toggle{
+    display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;
+    -webkit-box-align:center;-ms-flex-align:center;align-items:center;
+    -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;
+    width:40px;height:40px;border-radius:8px;
+    background:rgba(0,0,0,.08);border:1px solid rgba(0,0,0,.10);
+    font-size:18px;cursor:pointer;-webkit-tap-highlight-color:transparent;
+  }
+  .vp-avatar{width:34px;height:34px;font-size:11px;}
+  .vp-logo .vp-lsub{display:none;}
+  .vp-lname{font-size:16px;}
+
+  /* ── Nav drawer — slides down full width ── */
+  .vp-navbar{
+    display:-webkit-box;display:-ms-flexbox;display:flex;
+    -webkit-box-orient:vertical;-webkit-box-direction:normal;
+    -ms-flex-direction:column;flex-direction:column;
+    height:auto;max-height:0;overflow:hidden;padding:0;gap:0;
+    background:var(--bw);
+    position:absolute;top:100%;left:0;right:0;z-index:550;
+    -webkit-box-shadow:0 12px 36px rgba(0,15,50,.18);
+            box-shadow:0 12px 36px rgba(0,15,50,.18);
+    -webkit-transition:max-height .34s cubic-bezier(.4,0,.2,1);
+            transition:max-height .34s cubic-bezier(.4,0,.2,1);
+    border-top:2px solid var(--co);
+  }
+  .vp-navbar.mob-open{max-height:80vh;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+
+  /* ── Nav items — full-width rows ── */
+  .vp-nav-item{
+    -webkit-box-orient:vertical;-webkit-box-direction:normal;
+    -ms-flex-direction:column;flex-direction:column;
+  }
+  .vp-nav-link{
+    border-radius:0;
+    padding:14px 20px;
+    min-height:48px; /* WCAG touch target */
+    font-size:14px;
+    color:var(--tx);
+    background:none;
+    border-bottom:1px solid var(--bd);
+    -webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between;
+    -webkit-transform:none !important;-ms-transform:none !important;transform:none !important;
+    -webkit-box-shadow:none !important;box-shadow:none !important;
+    overflow:visible;
+  }
+  /* Kill desktop effects on mobile */
+  .vp-nav-link::before{display:none;}
+  .vp-nav-link::after{display:none;}
+
+  /* Open state — faint theme tint, left accent bar */
+  .vp-nav-item.open>.vp-nav-link{
+    background:color-mix(in srgb, var(--col) 60%, var(--bw) 40%);
+    color:var(--co);
+    border-left:3px solid var(--co);
+    -webkit-box-shadow:none !important;box-shadow:none !important;
+    -webkit-transform:none !important;-ms-transform:none !important;transform:none !important;
+  }
+  /* Active state */
+  .vp-nav-item.active>.vp-nav-link{
+    background:color-mix(in srgb, var(--col) 70%, var(--bw) 30%);
+    color:var(--co);font-weight:700;
+    border-left:3px solid var(--co);
+    -webkit-transform:none !important;-ms-transform:none !important;transform:none !important;
+    -webkit-box-shadow:none !important;box-shadow:none !important;
+  }
+  .vp-chevron{color:var(--txmu);font-size:11px;}
+  .vp-nav-item.open>.vp-nav-link .vp-chevron{
+    color:var(--co);
+    -webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg);
+  }
+  .vp-nav-item.active>.vp-nav-link .vp-chevron{color:var(--txmu);}
+
+  /* ── Dropdown panel — accordion style ── */
+  .vp-dropdown,.vp-dropdown.wide{
+    position:relative;top:auto;left:auto;
+    opacity:1;pointer-events:none;
+    -webkit-transform:none;-ms-transform:none;transform:none;
+    max-height:0;overflow:hidden;
+    border:none;
+    border-top:1px solid var(--bd);
+    border-radius:0;
+    -webkit-box-shadow:none;box-shadow:none;
+    padding:0;display:block;min-width:unset;width:100%;
+    background:color-mix(in srgb, var(--col) 80%, var(--bw) 20%);
+    -webkit-transition:max-height .30s cubic-bezier(.4,0,.2,1);
+            transition:max-height .30s cubic-bezier(.4,0,.2,1);
+  }
+  .vp-nav-item.open>.vp-dropdown{
+    max-height:600px;pointer-events:all;
+    padding:6px 0 10px;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+  }
+
+  /* ── Dropdown items — big touch targets ── */
+  .vp-dd-item{
+    padding:12px 20px;
+    min-height:48px;
+    white-space:normal;
+    -webkit-transform:none !important;-ms-transform:none !important;transform:none !important;
+    font-size:13.5px;
+  }
+  .vp-dd-item:hover,.vp-dd-item:active{
+    background:rgba(0,0,0,.05);
+    -webkit-transform:none !important;-ms-transform:none !important;transform:none !important;
+  }
+  .vp-dd-ico{width:36px;height:36px;font-size:15px;}
+  .vp-dd-name{font-size:13px;}
+  .vp-dd-desc{font-size:11px;}
+  .vp-dd-section{padding:10px 20px 5px;font-size:9px;}
+
+  /* ── Right utilities — wrap nicely ── */
+  .vp-navbar-spacer{display:none;}
+  .vp-nav-util{
+    border-left:none;border-top:1px solid var(--bd);
+    padding:12px 14px;
+    -ms-flex-wrap:wrap;flex-wrap:wrap;
+    gap:8px;
+    background:var(--sf);
+  }
+  .vp-util-btn{
+    background:none;border:1px solid var(--bd);
+    color:var(--txm);font-size:12px;
+    padding:8px 14px;min-height:40px;
+    -webkit-box-flex:1;-ms-flex:1 1 auto;flex:1 1 auto;
+    -webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;
+  }
+  .vp-util-btn:hover{background:var(--cdim);border-color:var(--co);color:var(--co);}
+  .vp-util-btn.danger{color:var(--re);border-color:var(--rbd);background:var(--reb);}
+
+  /* ── Quick strip — horizontally scrollable ── */
+  .vp-qs-label,.vp-qs-time{display:none;}
+  .vp-quickstrip{
+    padding:0 12px;gap:6px;height:44px;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;
+    -ms-flex-wrap:nowrap;flex-wrap:nowrap;
+    scrollbar-width:none;-ms-overflow-style:none;
+  }
+  .vp-quickstrip::-webkit-scrollbar{display:none;}
+  .vp-qs-btn{
+    font-size:12px;padding:0 13px;
+    min-height:32px;white-space:nowrap;-webkit-flex-shrink:0;flex-shrink:0;
+  }
+
+  /* ── Theme popup ── */
+  .vp-theme-popup{right:8px;left:8px;width:auto;}
+}
+
+/* ── Touch device — disable hover lift effects ── */
+@media(hover:none) and (pointer:coarse){
+  .vp-nav-link:hover,
+  .vp-qs-btn:hover{-webkit-transform:none !important;-ms-transform:none !important;transform:none !important;}
+  .vp-qs-btn:active{-webkit-transform:translateY(0);-ms-transform:translateY(0);transform:translateY(0);}
+  .vp-nav-link::before{display:none !important;}
+}
+
+/* ── Very small phones ≤380px ── */
+@media(max-width:380px){
+  .vp-qs-ico{display:none;}
+  .vp-qs-btn{padding:0 10px;font-size:11px;}
+  .vp-topbar{padding:0 10px;}
+  .vp-lname{font-size:14px;}
+}
+
+</style>
+</head>
+<body data-theme="ocean">
+
+<!-- ══════════════════════════════════════════════════
+     VISIONPLUS HEADER
+     Drop this entire <header> block into _Layout.cshtml
+══════════════════════════════════════════════════ -->
+<header class="vp-header" id="vp-header">
+
+  <!-- ─── ROW 1: White top bar (dispensing header style) ─── -->
+  <div class="vp-topbar">
+
+    <a class="vp-logo" href="#">
+      <div class="vp-lmark"></div>
+      <div>
+        <div class="vp-lname">VisionPlus</div>
+        <div class="vp-lsub">Practice Management System</div>
+      </div>
+    </a>
+
+    <div class="vp-practice">
+      <strong>Highfield Opticians</strong><span class="vp-sep">|</span>
+      Town Centre<span class="vp-sep">|</span>
+      superadmin<span class="vp-sep">|</span>
+      <span id="hdr-datetime">Friday 27/03/2026 &nbsp;17:38</span>
+    </div>
+
+    <div class="vp-topright">
+      <div class="vp-spill"><span class="vp-sdot"></span>Live</div>
+      <button class="vp-hbtn">🖨 Print</button>
+      <button class="vp-hbtn">⚙ Settings</button>
+
+      <!-- Theme picker — exact dispensing style -->
+      <button class="vp-theme-btn" id="vp-theme-trigger" onclick="vpToggleTheme(event)" title="Colour Theme">
+        <div class="vp-theme-swatches" id="vp-theme-swatches">
+          <div class="vp-theme-sw" style="background:#1a4fd6"></div>
+          <div class="vp-theme-sw" style="background:#0f6b6b"></div>
+          <div class="vp-theme-sw" style="background:#5a2da0"></div>
+          <div class="vp-theme-sw" style="background:#0a7a54"></div>
+        </div>
+        🎨 Theme
+      </button>
+
+      <div class="vp-avatar" title="superadmin">SA</div>
+      <button class="vp-mob-toggle" id="vp-mob-toggle" onclick="vpToggleMobile()" aria-label="Menu">☰</button>
+    </div>
+  </div>
+
+  <!-- ─── ROW 2: Coloured 3-D main navigation ─── -->
+  <div class="vp-navbar-wrap">
+    <nav class="vp-navbar" id="vp-navbar" role="navigation" aria-label="Main navigation">
+
+      <!-- PATIENTS -->
+      <div class="vp-nav-item" id="nav-patients">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-patients')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">🧑‍⚕️</span>Patients<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown wide" role="menu">
+          <div class="vp-dd-section">Registration</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🔍</div><div class="vp-dd-label"><span class="vp-dd-name">Search Patient</span><span class="vp-dd-desc">Find by name, DOB or NHS</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">➕</div><div class="vp-dd-label"><span class="vp-dd-name">New Patient</span><span class="vp-dd-desc">Register new record</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📋</div><div class="vp-dd-label"><span class="vp-dd-name">Patient List</span><span class="vp-dd-desc">Browse all patients</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🏥</div><div class="vp-dd-label"><span class="vp-dd-name">NHS Details</span><span class="vp-dd-desc">NHS number &amp; entitlement</span></div></a>
+          <div class="vp-dd-section c2">GOS &amp; Forms</div>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">🖨️</div><div class="vp-dd-label"><span class="vp-dd-name">Gos18 Print</span><span class="vp-dd-desc">Print GOS18 voucher</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📝</div><div class="vp-dd-label"><span class="vp-dd-name">Questionnaire</span><span class="vp-dd-desc">Patient intake questionnaire</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📤</div><div class="vp-dd-label"><span class="vp-dd-name">eGos Submission</span><span class="vp-dd-desc">Submit electronically to BSA</span></div></a>
+          <div class="vp-dd-section c3">Contact Lenses</div>
+          <a class="vp-dd-item ico-c3" href="#"><div class="vp-dd-ico">👁️</div><div class="vp-dd-label"><span class="vp-dd-name">CL Collection</span><span class="vp-dd-desc">Contact lens collection log</span></div></a>
+          <a class="vp-dd-item ico-c3" href="#"><div class="vp-dd-ico">📎</div><div class="vp-dd-label"><span class="vp-dd-name">Patient Attachment</span><span class="vp-dd-desc">Upload &amp; view attachments</span></div></a>
+          <div class="vp-dd-section c4">Premises &amp; Comms</div>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">🏢</div><div class="vp-dd-label"><span class="vp-dd-name">Update Premises</span><span class="vp-dd-desc">Edit practice location details</span></div></a>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">✉️</div><div class="vp-dd-label"><span class="vp-dd-name">General SMS / E-Mail</span><span class="vp-dd-desc">Bulk messaging tool</span></div></a>
+          <div class="vp-dd-section">eGos &amp; Payments</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">💳</div><div class="vp-dd-label"><span class="vp-dd-name">eGos Payments</span><span class="vp-dd-desc">Track NHS payment claims</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🌐</div><div class="vp-dd-label"><span class="vp-dd-name">eGos3 Outside</span><span class="vp-dd-desc">External GOS3 submission</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📦</div><div class="vp-dd-label"><span class="vp-dd-name">eGos Multi Submit</span><span class="vp-dd-desc">Batch electronic submission</span></div></a>
+        </div>
+      </div>
+
+      <!-- APPOINTMENT -->
+      <div class="vp-nav-item" id="nav-appointment">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-appointment')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">📅</span>Appointment<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo">Booking</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📅</div><div class="vp-dd-label"><span class="vp-dd-name">New Appointment</span><span class="vp-dd-desc">Book a new slot</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🗓️</div><div class="vp-dd-label"><span class="vp-dd-name">Room Diary</span><span class="vp-dd-desc">View all room schedules</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">👓</div><div class="vp-dd-label"><span class="vp-dd-name">Optom Diary</span><span class="vp-dd-desc">Optometrist appointment view</span></div></a>
+          <div class="vp-dd-divider"></div>
+          <div class="vp-dd-section solo c2">Management</div>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">✏️</div><div class="vp-dd-label"><span class="vp-dd-name">Edit Appointment</span><span class="vp-dd-desc">Modify existing bookings</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">🔔</div><div class="vp-dd-label"><span class="vp-dd-name">Appointment Reminders</span><span class="vp-dd-desc">SMS / email reminders</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📊</div><div class="vp-dd-label"><span class="vp-dd-name">Appointment Analysis</span><span class="vp-dd-desc">DNA &amp; utilisation stats</span></div></a>
+        </div>
+      </div>
+
+      <!-- EXAMINATION -->
+      <div class="vp-nav-item" id="nav-examination">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-examination')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">🔬</span>Examination<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo">Clinical</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">👁️</div><div class="vp-dd-label"><span class="vp-dd-name">Eye Examination</span><span class="vp-dd-desc">Full sight test record</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📐</div><div class="vp-dd-label"><span class="vp-dd-name">Refraction</span><span class="vp-dd-desc">Enter Rx data</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🩺</div><div class="vp-dd-label"><span class="vp-dd-name">Clinical Notes</span><span class="vp-dd-desc">Optometrist notes &amp; findings</span></div></a>
+          <div class="vp-dd-divider"></div>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📜</div><div class="vp-dd-label"><span class="vp-dd-name">Examination History</span><span class="vp-dd-desc">Previous test records</span></div></a>
+          <a class="vp-dd-item ico-c3" href="#"><div class="vp-dd-ico">🔗</div><div class="vp-dd-label"><span class="vp-dd-name">Referrals</span><span class="vp-dd-desc">Hospital &amp; GP referral letters</span></div></a>
+        </div>
+      </div>
+
+      <!-- DISPENSING (active page) -->
+      <div class="vp-nav-item" id="nav-dispensing">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-dispensing')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">👓</span>Dispensing<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown wide" role="menu">
+          <div class="vp-dd-section">Spectacles</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🕶️</div><div class="vp-dd-label"><span class="vp-dd-name">New Dispense</span><span class="vp-dd-desc">Create spectacle order</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📋</div><div class="vp-dd-label"><span class="vp-dd-name">Manage Orders</span><span class="vp-dd-desc">Track &amp; update orders</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🏭</div><div class="vp-dd-label"><span class="vp-dd-name">Lab Orders</span><span class="vp-dd-desc">Send to laboratory</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">✅</div><div class="vp-dd-label"><span class="vp-dd-name">Collection</span><span class="vp-dd-desc">Mark order as collected</span></div></a>
+          <div class="vp-dd-section c2">Contact Lenses</div>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">👁️</div><div class="vp-dd-label"><span class="vp-dd-name">CL Order</span><span class="vp-dd-desc">New contact lens order</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">🔁</div><div class="vp-dd-label"><span class="vp-dd-name">CL Repeat</span><span class="vp-dd-desc">Reorder previous Rx</span></div></a>
+          <div class="vp-dd-section c4">Finance</div>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">💷</div><div class="vp-dd-label"><span class="vp-dd-name">Payments</span><span class="vp-dd-desc">Take &amp; record payments</span></div></a>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">🧾</div><div class="vp-dd-label"><span class="vp-dd-name">Receipts</span><span class="vp-dd-desc">Print / email receipt</span></div></a>
+        </div>
+      </div>
+
+      <!-- MARKETING -->
+      <div class="vp-nav-item" id="nav-marketing">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-marketing')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">📣</span>Marketing<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo">Campaigns</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">✉️</div><div class="vp-dd-label"><span class="vp-dd-name">Email Campaigns</span><span class="vp-dd-desc">Design &amp; send newsletters</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📱</div><div class="vp-dd-label"><span class="vp-dd-name">SMS Campaigns</span><span class="vp-dd-desc">Bulk text messaging</span></div></a>
+          <a class="vp-dd-item ico-c3" href="#"><div class="vp-dd-ico">🎯</div><div class="vp-dd-label"><span class="vp-dd-name">Target Groups</span><span class="vp-dd-desc">Segment patient lists</span></div></a>
+          <div class="vp-dd-divider"></div>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">📊</div><div class="vp-dd-label"><span class="vp-dd-name">Campaign Analytics</span><span class="vp-dd-desc">Open rates &amp; conversions</span></div></a>
+        </div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="vp-nav-item" id="nav-reports">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-reports')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">📊</span>Reports<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo">Clinical Reports</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🩺</div><div class="vp-dd-label"><span class="vp-dd-name">Sight Test Stats</span><span class="vp-dd-desc">Exam volumes &amp; outcomes</span></div></a>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📅</div><div class="vp-dd-label"><span class="vp-dd-name">Recall Performance</span><span class="vp-dd-desc">Recall response rates</span></div></a>
+          <div class="vp-dd-section solo c4">Financial Reports</div>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">💷</div><div class="vp-dd-label"><span class="vp-dd-name">Sales Summary</span><span class="vp-dd-desc">Revenue by period</span></div></a>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">🏦</div><div class="vp-dd-label"><span class="vp-dd-name">NHS Reconciliation</span><span class="vp-dd-desc">GOS payments vs claims</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📤</div><div class="vp-dd-label"><span class="vp-dd-name">Export Data</span><span class="vp-dd-desc">CSV / Excel export</span></div></a>
+        </div>
+      </div>
+
+      <!-- RECALL -->
+      <div class="vp-nav-item" id="nav-recall">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-recall')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">🔔</span>Recall<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo">Recall Management</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">🔔</div><div class="vp-dd-label"><span class="vp-dd-name">Recall Due</span><span class="vp-dd-desc">Patients due for recall</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">✉️</div><div class="vp-dd-label"><span class="vp-dd-name">Send Recall Letters</span><span class="vp-dd-desc">Print or email recall notices</span></div></a>
+          <a class="vp-dd-item ico-c3" href="#"><div class="vp-dd-ico">⚙️</div><div class="vp-dd-label"><span class="vp-dd-name">Recall Settings</span><span class="vp-dd-desc">Configure recall intervals</span></div></a>
+        </div>
+      </div>
+
+      <!-- LAB -->
+      <div class="vp-nav-item" id="nav-lab">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-lab')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">🏭</span>Lab<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo">Laboratory</div>
+          <a class="vp-dd-item" href="#"><div class="vp-dd-ico">📤</div><div class="vp-dd-label"><span class="vp-dd-name">Send to Lab</span><span class="vp-dd-desc">Dispatch glazing order</span></div></a>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📦</div><div class="vp-dd-label"><span class="vp-dd-name">Track Orders</span><span class="vp-dd-desc">Lab order status tracker</span></div></a>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">🏢</div><div class="vp-dd-label"><span class="vp-dd-name">Lab Accounts</span><span class="vp-dd-desc">Manage lab suppliers</span></div></a>
+        </div>
+      </div>
+
+      <!-- CASH SO/DD -->
+      <div class="vp-nav-item" id="nav-cash">
+        <button class="vp-nav-link" onclick="vpToggleNav('nav-cash')" aria-haspopup="true" aria-expanded="false">
+          <span class="vp-nav-icon">💷</span>Cash SO/DD<span class="vp-chevron">▾</span>
+        </button>
+        <div class="vp-dropdown" role="menu">
+          <div class="vp-dd-section solo c4">Finance</div>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">🧾</div><div class="vp-dd-label"><span class="vp-dd-name">Daily Takings</span><span class="vp-dd-desc">End of day cash summary</span></div></a>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">📋</div><div class="vp-dd-label"><span class="vp-dd-name">Standing Orders</span><span class="vp-dd-desc">Manage patient SO plans</span></div></a>
+          <a class="vp-dd-item ico-c4" href="#"><div class="vp-dd-ico">🏦</div><div class="vp-dd-label"><span class="vp-dd-name">Direct Debits</span><span class="vp-dd-desc">DD payment schedules</span></div></a>
+          <div class="vp-dd-divider"></div>
+          <a class="vp-dd-item ico-c2" href="#"><div class="vp-dd-ico">📊</div><div class="vp-dd-label"><span class="vp-dd-name">Cash Report</span><span class="vp-dd-desc">Payment method breakdown</span></div></a>
+        </div>
+      </div>
+
+      <div class="vp-navbar-spacer"></div>
+      <div class="vp-nav-util">
+        <a class="vp-util-btn" href="#">⚙️ Admin</a>
+        <a class="vp-util-btn danger" href="#">🔓 Log Out</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ─── ROW 3: Quick-access strip below the nav ─── -->
+  <div class="vp-quickstrip">
+    <span class="vp-qs-label">Quick Access</span>
+    <a class="vp-qs-btn" href="#" onclick="return false;"><span class="vp-qs-ico">📋</span>New Task</a>
+    <a class="vp-qs-btn" href="#" onclick="return false;"><span class="vp-qs-ico">👓</span>Optom Diary</a>
+    <a class="vp-qs-btn" href="#" onclick="return false;"><span class="vp-qs-ico">🗓️</span>Room Diary</a>
+    <div class="vp-qs-spacer"></div>
+    <span class="vp-qs-time" id="qs-time">17:38</span>
+  </div>
+
+</header>
+
+<!-- Theme popup — anchored outside header, same as dispensing -->
+<div class="vp-theme-popup" id="vp-theme-popup">
+  <div class="vp-tp-hd">
+    <span class="vp-tp-title">Colour Theme</span>
+    <button class="vp-tp-close" onclick="vpCloseTheme()">✕</button>
+  </div>
+  <div class="vp-tp-list">
+    <div class="vp-theme-opt active" id="vp-topt-ocean" onclick="vpSetTheme('ocean')">
+      <div class="vp-ts-swatches">
+        <div class="vp-ts-sw" style="background:#1a4fd6"></div>
+        <div class="vp-ts-sw" style="background:#0f6b6b"></div>
+        <div class="vp-ts-sw" style="background:#5a2da0"></div>
+        <div class="vp-ts-sw" style="background:#0a7a54"></div>
+      </div>
+      <div>
+        <div class="vp-theme-opt-name">Ocean Professional</div>
+        <span class="vp-theme-opt-desc">Confident navy &amp; blue</span>
+      </div>
+      <span class="vp-tp-tick">✓</span>
+    </div>
+    <div class="vp-theme-opt" id="vp-topt-slate" onclick="vpSetTheme('slate')">
+      <div class="vp-ts-swatches">
+        <div class="vp-ts-sw" style="background:#2c5282"></div>
+        <div class="vp-ts-sw" style="background:#2d4a6b"></div>
+        <div class="vp-ts-sw" style="background:#44337a"></div>
+        <div class="vp-ts-sw" style="background:#1a5276"></div>
+      </div>
+      <div>
+        <div class="vp-theme-opt-name">Slate Executive</div>
+        <span class="vp-theme-opt-desc">Refined cool slate</span>
+      </div>
+      <span class="vp-tp-tick">✓</span>
+    </div>
+    <div class="vp-theme-opt" id="vp-topt-ember" onclick="vpSetTheme('ember')">
+      <div class="vp-ts-swatches">
+        <div class="vp-ts-sw" style="background:#b83215"></div>
+        <div class="vp-ts-sw" style="background:#a0400a"></div>
+        <div class="vp-ts-sw" style="background:#7b3f00"></div>
+        <div class="vp-ts-sw" style="background:#5a5a00"></div>
+      </div>
+      <div>
+        <div class="vp-theme-opt-name">Ember Warm</div>
+        <span class="vp-theme-opt-desc">Warm terracotta &amp; rust</span>
+      </div>
+      <span class="vp-tp-tick">✓</span>
+    </div>
+    <div class="vp-theme-opt" id="vp-topt-sage" onclick="vpSetTheme('sage')">
+      <div class="vp-ts-swatches">
+        <div class="vp-ts-sw" style="background:#1a6b5a"></div>
+        <div class="vp-ts-sw" style="background:#2c6e49"></div>
+        <div class="vp-ts-sw" style="background:#355070"></div>
+        <div class="vp-ts-sw" style="background:#5c4033"></div>
+      </div>
+      <div>
+        <div class="vp-theme-opt-name">Sage Clinical</div>
+        <span class="vp-theme-opt-desc">Calm forest green</span>
+      </div>
+      <span class="vp-tp-tick">✓</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     DEMO CONTENT (mirroring dispensing page look)
+══════════════════════════════════════════════════ -->
+<div class="demo-body">
+
+  <div class="demo-card">
+    <h2>VisionPlus Navigation — Merged Component</h2>
+    <p>This navbar uses <strong>every colour token from visionplus-dispensing.html</strong> exactly — the same four themes, the same CSS variable names, the same 3-D button technique from the dispensing module tabs. Drop this <code>&lt;header&gt;</code> block into your <code>_Layout.cshtml</code> and it will be visually consistent with the dispensing page on every theme automatically.</p>
+    <div class="demo-tag">✓ Exact dispensing colour tokens</div>
+    <div class="demo-tag">✓ 3-D buttons from .mt style</div>
+    <div class="demo-tag">✓ Gold active tab (themes-aware)</div>
+    <div class="demo-tag">✓ Quick-access below nav bar</div>
+    <div class="demo-tag">✓ Dispensing theme picker popup</div>
+    <div class="demo-tag">✓ Chrome · Edge · Safari · Firefox</div>
+    <div class="demo-tag">✓ Mobile · Tablet responsive</div>
+  </div>
+
+  <div class="demo-card">
+    <h2>Integration — _Layout.cshtml</h2>
+    <p>The CSS tokens are already identical to <code>visionplus-dispensing.html</code>, so you can share a single <code>site.css</code>. The active page state is set with the <code>active</code> class on the relevant <code>.vp-nav-item</code>:</p>
+    <pre>@{ var ctrl = ViewContext.RouteData.Values["controller"]?.ToString(); }
+&lt;div class="vp-nav-item @(ctrl=="Dispensing" ? "active" : "")" id="nav-dispensing"&gt;</pre>
+    <p style="margin-top:12px">Quick-access routes:</p>
+    <pre>href="@Url.Action("New","Tasks")"
+href="@Url.Action("Index","OptomDiary")"
+href="@Url.Action("Index","RoomDiary")"</pre>
+  </div>
+
+  <div style="height:32px"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════ -->
+<script>
+/* ── Dropdown toggle ── */
+function vpToggleNav(id) {
+  var items = document.querySelectorAll('.vp-nav-item');
+  var target = document.getElementById(id);
+  var isOpen = target && target.classList.contains('open');
+  items.forEach(function(i) {
+    i.classList.remove('open');
+    var b = i.querySelector('.vp-nav-link');
+    if (b) b.setAttribute('aria-expanded','false');
+  });
+  if (target && !isOpen) {
+    target.classList.add('open');
+    var btn = target.querySelector('.vp-nav-link');
+    if (btn) btn.setAttribute('aria-expanded','true');
+  }
+}
+
+/* ── Outside click ── */
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.vp-nav-item') && !e.target.closest('.vp-mob-toggle')) {
+    document.querySelectorAll('.vp-nav-item').forEach(function(i) {
+      i.classList.remove('open');
+      var b = i.querySelector('.vp-nav-link');
+      if (b) b.setAttribute('aria-expanded','false');
+    });
+  }
+  if (!e.target.closest('.vp-theme-btn') && !e.target.closest('.vp-theme-popup')) {
+    document.getElementById('vp-theme-popup').classList.remove('open');
+  }
+});
+
+/* ── Escape ── */
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Escape') return;
+  document.querySelectorAll('.vp-nav-item').forEach(function(i) {
+    i.classList.remove('open');
+    var b = i.querySelector('.vp-nav-link');
+    if (b) b.setAttribute('aria-expanded','false');
+  });
+  var nb = document.getElementById('vp-navbar');
+  if (nb) nb.classList.remove('mob-open');
+  var tog = document.getElementById('vp-mob-toggle');
+  if (tog) tog.textContent = '☰';
+  document.getElementById('vp-theme-popup').classList.remove('open');
+});
+
+/* ── Mobile nav toggle ── */
+function vpToggleMobile() {
+  var nb  = document.getElementById('vp-navbar');
+  var tog = document.getElementById('vp-mob-toggle');
+  if (!nb || !tog) return;
+  var open = nb.classList.toggle('mob-open');
+  tog.textContent = open ? '✕' : '☰';
+  if (!open) document.querySelectorAll('.vp-nav-item').forEach(function(i){ i.classList.remove('open'); });
+}
+
+/* ── Theme switcher — exact dispensing pattern ── */
+function vpToggleTheme(e) {
+  e.stopPropagation();
+  document.getElementById('vp-theme-popup').classList.toggle('open');
+}
+function vpCloseTheme() {
+  document.getElementById('vp-theme-popup').classList.remove('open');
+}
+function vpSetTheme(t) {
+  document.body.setAttribute('data-theme', t);
+  try { localStorage.setItem('vp-theme', t); } catch(ex) {}
+  /* Update active state on popup options */
+  document.querySelectorAll('.vp-theme-opt').forEach(function(o){ o.classList.remove('active'); });
+  var opt = document.getElementById('vp-topt-' + t);
+  if (opt) opt.classList.add('active');
+  document.getElementById('vp-theme-popup').classList.remove('open');
+}
+/* Restore saved theme on load */
+(function() {
+  try {
+    var saved = localStorage.getItem('vp-theme') || 'ocean';
+    document.body.setAttribute('data-theme', saved);
+    document.querySelectorAll('.vp-theme-opt').forEach(function(o){ o.classList.remove('active'); });
+    var opt = document.getElementById('vp-topt-' + saved);
+    if (opt) opt.classList.add('active');
+  } catch(ex) {}
+})();
+
+/* ── Live clock ── */
+function vpUpdateClock() {
+  var now = new Date();
+  var hh = String(now.getHours()).padStart(2,'0');
+  var mm = String(now.getMinutes()).padStart(2,'0');
+  var qs = document.getElementById('qs-time');
+  if (qs) qs.textContent = hh + ':' + mm;
+  var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var dd = String(now.getDate()).padStart(2,'0');
+  var mo = String(now.getMonth()+1).padStart(2,'0');
+  var hdr = document.getElementById('hdr-datetime');
+  if (hdr) hdr.textContent = days[now.getDay()] + ' ' + dd + '/' + mo + '/' + now.getFullYear() + '\u00a0\u00a0' + hh + ':' + mm;
+}
+vpUpdateClock();
+setInterval(vpUpdateClock, 30000);
+</script>
+
+</body>
+</html>
